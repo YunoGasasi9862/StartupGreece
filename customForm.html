@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Alegreya+Sans+SC:ital,wght@0,300;0,400;0,500;0,700;0,800;1,300;1,400;1,700&family=Combo&family=Exo+2:ital,wght@0,300;0,400;0,500;0,700;0,800;1,300;1,400;1,500;1,600;1,700;1,800&family=Special+Elite&display=swap" rel="stylesheet">
+     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+<title>Demo Test</title>
+
+
+    <style>
+        body{
+            
+            margin:0;
+            padding:0;
+           font-family: 'Exo 2', sans-serif;
+            background-color: #f1f1f1;
+        }
+
+      
+         #heading
+         {
+
+            margin:2 auto;
+            text-align:center;
+            
+         }
+
+         .btnFields
+         {
+                margin-top:40px;
+                display:flex;
+                justify-content:space-evenly;
+                text-align: center;
+               
+         }
+     
+         #ATF, #AS
+         {
+            font-family: 'Exo 2', sans-serif;
+             width: 100px;
+             height: 30px;
+             background-color: #0fb3a5;
+             border: 1px solid #ffffff;
+             border-radius: 5px;
+             cursor: pointer;
+             color:white;
+             font-size:10px;
+        
+
+            transition: all ease .5s;
+         }
+
+         #ATF:hover, #AS:hover
+         {
+             background-color: #15837a;
+         }
+
+         #ATF:active, #AS:active
+         {
+                background-color: #42a7e2;
+         }
+         .Formarea
+         {
+                 padding:20px;
+                 display:flex;
+                 margin:0 auto;
+                 width: 80%;
+                justify-content:space-evenly;
+                text-align: center;
+                 position: relative;
+                 top:10vh;
+                 background-color: #ffffff;
+                box-shadow: 0px 0px 130px 15px rgba(35,230,25,0.86);
+                border-radius:20px;
+
+         }
+
+         .RowDiv, .RowDiv2
+         {
+            display:flex;
+            justify-content:space-evenly;
+            margin:10px 0;
+           
+         }
+         .TextAreaF, .SelectAreaF
+         {
+            display:flex;
+            flex-direction:column;
+            width:35vh;
+         
+            
+         }
+         .removeBTN
+         {
+             font-family: 'Exo 2', sans-serif;
+             width: 100px;
+             height: 30px;
+             background-color: #e25d04;
+             border: 1px solid #ffffff;
+             border-radius: 5px;
+             cursor: pointer;
+             color:white;
+             font-size:10px;
+             transition: all ease .5s;
+
+         }
+
+         .removeBTN:hover
+         {
+             background-color: #913a0e;
+         }
+
+
+         .SaveBTN
+         {
+                display:flex;
+                justify-content:center;
+                text-align: center;
+                margin:0 auto;
+                width: 80%;
+                position: relative;
+                top:15vh;
+         }
+         #saveForm
+         {
+            font-family: 'Exo 2', sans-serif;
+             width: 100px;
+             height: 30px;
+             background-color: #eb1414;
+             border: 1px solid #ffffff;
+             border-radius: 5px;
+             cursor: pointer;
+             color:white;
+             font-size:10px;
+             transition: all ease .5s;
+         }
+
+         #saveForm:hover
+         {
+             background-color: #720606;
+         }
+
+
+    </style>
+    
+</head>
+<body>
+      
+    <header>
+        <h2 id="heading">Custom form builder</h2>
+    </header>
+    <main>
+               
+        <div class="btnFields">
+
+            <button id="ATF" type="button">Add Text Field</button>
+            <button id="AS" type="button">Add Select</button>
+
+        </div>
+        <div class="Formarea">
+            <div class="TextAreaF"></div>
+            <div class="SelectAreaF"></div>
+        </div>
+        <div class="SaveBTN">
+            <button id="saveForm" type="button">Save Form</button>
+
+        </div>
+
+        <table></table>
+
+
+    </main>
+
+
+
+
+
+    <script>
+        
+         var String=``;
+         var indexATF=0;
+        var indexAS=0;
+      function InputForSelect()
+      {
+            var InputSize= prompt("Enter the number of options you want to add: ");
+            String +=` <div class="RowDiv2">
+                    <select name="" id="${indexAS}" form="">`;
+            for(var i=0; i<InputSize; i++)
+            {
+                var Data=prompt("Enter the data: ");
+
+               
+                String +=`<option value=${Data}>${Data}</option>`;
+
+            
+            }
+            indexAS++;
+           return String += `</select>
+                 <button class="removeBTN" type="button">Remove</button>
+            <div>`;
+           
+      }  
+
+      function SaveData()
+      {
+        for(var i=0; i<indexATF; i++)
+        {
+            var value= $(`#${i}`).val();
+            console.log(value);
+        }
+      }
+
+      $(function()  //initiliazer
+      {
+
+   
+         
+        $("#ATF").click(function()
+        {
+
+
+            $(".TextAreaF").append(`
+            
+            
+            <div class="RowDiv">
+                 <input type="text" name="text" id="${indexATF}" placeholder="Enter text">
+                 <button class="removeBTN" type="button">Remove</button>
+            <div>
+            
+            `);
+
+            indexATF++;
+        });
+        
+        $("#AS").click(function()
+        {
+
+            var value=InputForSelect(); //calling the input function
+
+  
+            $(".SelectAreaF").append(`${value}`);
+
+            String="";
+
+     
+        });
+          
+            //binding event dynamically on the document for red BTN
+         $(document).on("click", ".removeBTN", function()
+         {
+
+            //this = > the redBTN itself
+             $(this).parent().remove(); //remove the redbtn, the corresponding field and even the parent div :)
+         })
+
+         $("#saveForm").click(function() //saves data
+         {
+             SaveData();
+         })
+       
+         
+      });
+
+
+    </script>
+
+    
+</body>
+</html>
