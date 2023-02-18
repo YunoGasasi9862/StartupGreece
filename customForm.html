@@ -74,7 +74,7 @@
                  position: relative;
                  top:10vh;
                  background-color: #ffffff;
-                box-shadow: 0px 0px 130px 15px rgba(35,230,25,0.86);
+                box-shadow: 0px 0px 40px 15px rgba(85, 84, 85, 0.66);
                 border-radius:20px;
 
          }
@@ -97,7 +97,7 @@
          .removeBTN
          {
              font-family: 'Exo 2', sans-serif;
-             width: 100px;
+             width: 80px;
              height: 30px;
              background-color: #e25d04;
              border: 1px solid #ffffff;
@@ -144,6 +144,65 @@
              background-color: #720606;
          }
 
+         .TableContainer
+         {
+            display:flex;
+            margin: 0 auto;
+            justify-content: space-evenly;
+            align-items: flex-start;
+            text-align: center;
+            margin:0 auto;
+            width: 50%;
+            position: relative;
+            top:22vh;
+         }
+
+         input{
+
+            width:30%;
+         }
+          table
+         {
+            border-collapse: collapse;
+            width: 100%;
+            text-align: center;
+
+            margin-bottom:20px;
+            background-color: #ffffff;
+         }
+
+
+         tr > th{
+
+            font-weight:700;
+            font-size:20px;
+          
+         }
+         td,th{
+
+            padding-top:10px;
+            padding-bottom:10px;
+         }
+
+         .TableText, .TableSelect
+         {
+            width:100%;
+            display:flex;
+            flex-direction: column;
+
+         }
+        
+        .table1
+        {
+            border-top-left-radius: 10px;
+            border-bottom-left-radius: 10px;
+
+        }
+        .table2{
+
+            border-top-right-radius: 10px;
+            border-bottom-right-radius: 10px;
+        }
 
     </style>
     
@@ -170,7 +229,23 @@
 
         </div>
 
-        <table></table>
+        <div class="TableContainer">  
+            
+               <div class="TableText">
+                <table class="table1">
+                 
+
+                    </table>
+               </div>
+               <div class="TableSelect">
+
+                <table class="table2">
+                 
+
+                </table>
+               </div>
+        
+        </div>
 
 
     </main>
@@ -182,13 +257,23 @@
     <script>
         
          var String=``;
+         var Header1=[""];
+         var hi=0;
+         var Header2=[""];
+         var hi2=0;
+
          var indexATF=0;
         var indexAS=0;
       function InputForSelect()
       {
+            var header=prompt("Enter the type of field you will enter: (For example, type of cars?) ");
+            console.log(header);
+            Header1[hi]=header;
+            hi++;
             var InputSize= prompt("Enter the number of options you want to add: ");
+          
             String +=` <div class="RowDiv2">
-                    <select name="" id="${indexAS}" form="">`;
+                    <select name="" id="${indexAS}${indexAS}" form="">`;
             for(var i=0; i<InputSize; i++)
             {
                 var Data=prompt("Enter the data: ");
@@ -205,13 +290,78 @@
            
       }  
 
+      function InputForField()
+      {
+           
+             var header=prompt("Enter the type of field you will enter: (For example, Name?) ");
+            Header2[hi2]=header;
+            hi2++;
+            String +=`  
+            <div class="RowDiv">
+                 <input type="text" name="text" id="${indexATF}" placeholder="Enter ${header}">
+                 <button class="removeBTN" type="button">Remove</button>
+            <div>`;
+            
+                indexATF++;
+           return String;
+
+      }
       function SaveData()
       {
-        for(var i=0; i<indexATF; i++)
+
+        
+           $(".table1 > tr").children().remove();
+
+         for(var i=0; i<(indexATF); i++)
         {
             var value= $(`#${i}`).val();
-            console.log(value);
+            $(".table1").append(`
+                            
+            <tr>
+
+             <th>${Header2[i]===""? "Not Entered": Header2[i]}</th>
+
+             </tr>
+             
+            <tr>
+             <td>${value===""? "Not Entered": value}</td>
+             </tr>
+                        
+            `);
+
+        
+
+           
+        
         }
+         //since header changes everytime for the user, it's better to create a separate small table for each row
+
+        $(".table2 > tr").children().remove();
+
+        for(var i=0; i<indexAS; i++)
+        {
+
+            var value2= $(`#${i}${i}`).val();
+
+            $(".table2").append(`
+            
+                <tr>
+                    
+                    <th>${Header1[i]===""? "Not Entered": Header1[i]}</th>
+                   
+                </tr>
+                <tr>
+                    <td>${value2===""? "Not Entered": value2}</td>
+                </tr>
+
+             
+        `);
+       
+
+
+        }
+
+
       }
 
       $(function()  //initiliazer
@@ -223,17 +373,14 @@
         {
 
 
+            var value=InputForField(); //calling the input function
             $(".TextAreaF").append(`
-            
-            
-            <div class="RowDiv">
-                 <input type="text" name="text" id="${indexATF}" placeholder="Enter text">
-                 <button class="removeBTN" type="button">Remove</button>
-            <div>
-            
+                ${value}
+                 
             `);
 
-            indexATF++;
+            String="";
+         
         });
         
         $("#AS").click(function()
@@ -245,7 +392,8 @@
             $(".SelectAreaF").append(`${value}`);
 
             String="";
-
+           
+     
      
         });
           
@@ -254,7 +402,16 @@
          {
 
             //this = > the redBTN itself
+             if($(this).parent().hasClass("RowDiv")) //so index is decremented and the removed item is nto displayed again
+             {
+                 indexATF--;
+             }
+             else
+             {
+                 indexAS--;
+             }
              $(this).parent().remove(); //remove the redbtn, the corresponding field and even the parent div :)
+
          })
 
          $("#saveForm").click(function() //saves data
